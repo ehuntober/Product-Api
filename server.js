@@ -5,6 +5,7 @@ const Product = require('./models/productModel')
 
 
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
 
 app.get('/', (req,res)=>{
@@ -68,7 +69,8 @@ app.put('products/:id', async(req,res) =>{
             return res.status(404).json({message: `cannot find any product with ID ${id}`}) ;
         }
 
-        res.status(200).json(product);
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(updatedProduct);
 
     }
 
@@ -78,6 +80,23 @@ app.put('products/:id', async(req,res) =>{
     }
 })
 
+app.delete('products/:id', async(req,res) =>{
+    try{
+
+        const {id} = req.params;
+        const product = await Product.findByIdAndDelete(id);
+        if(!product){
+            return res.status(404).json({message: `cannot find any product with ID ${id}`}
+            }
+
+        res.status(200).json()
+    }
+
+    catch(error){
+        res.status(500).json( {message : error.message})
+       
+    }
+})
 
 mongoose.connect("mongodb://localhost:27017/devamine")
 .then(() => {

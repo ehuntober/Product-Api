@@ -8,16 +8,6 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 
-app.get('/', (req,res)=>{
-    res.send('Hello Node API')
-})
-
-app.get('/blog', (req,res) =>{
-
-    res.send('Hello Node API')
-})
-
-
 app.get('/products', async (req,res) =>{
     try{
         const product = await Product.find({});
@@ -86,7 +76,7 @@ app.delete('products/:id', async(req,res) =>{
         const {id} = req.params;
         const product = await Product.findByIdAndDelete(id);
         if(!product){
-            return res.status(404).json({message: `cannot find any product with ID ${id}`}
+            return res.status(404).json({message: `cannot find any product with ID ${id}`}) ;
             }
 
         res.status(200).json()
